@@ -4,6 +4,7 @@
 
 #include "StringUtils.h"
 
+#include <iterator>
 #include <numeric>
 #include <sstream>
 
@@ -105,4 +106,29 @@ namespace StringUtils
         return lowerCaseString;
     }
 
+    StringSet getClosestValues(const std::string& value, const StringSet& possibilities, std::size_t maxWantedValues)
+    {
+        std::vector<std::pair<int, std::string>> dists;
+        dists.reserve(possibilities.size());
+
+        for (const auto& possibility : possibilities)
+        {
+            const auto distance = levenshteinDistance(possibility, value);
+            dists.emplace_back(distance, possibility);
+        }
+
+        std::sort(
+            std::begin(dists), std::end(dists), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
+
+        const std::size_t resultCount = std::min(maxWantedValues, dists.size());
+        const auto beginIt = std::cbegin(dists);
+
+        StringSet res;
+        res.reserve(resultCount);
+        std::transform(beginIt, beginIt + resultCount, std::inserter(res, std::begin(res)), [](const auto& pair) {
+            return pair.second;
+        });
+
+        return res;
+    }
 } // namespace StringUtils
