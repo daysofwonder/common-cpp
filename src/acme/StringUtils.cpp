@@ -106,7 +106,10 @@ namespace StringUtils
         return lowerCaseString;
     }
 
-    StringSet getClosestValues(const std::string& value, const StringSet& possibilities, std::size_t maxWantedValues)
+    StringSet getClosestValues(const std::string& value,
+                               const StringSet& possibilities,
+                               std::size_t maxWantedValueCount,
+                               int maxDist)
     {
         std::vector<std::pair<int, std::string>> dists;
         dists.reserve(possibilities.size());
@@ -114,13 +117,16 @@ namespace StringUtils
         for (const auto& possibility : possibilities)
         {
             const auto distance = levenshteinDistance(possibility, value);
-            dists.emplace_back(distance, possibility);
+            if (distance <= maxDist)
+            {
+                dists.emplace_back(distance, possibility);
+            }
         }
 
         std::sort(
             std::begin(dists), std::end(dists), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
 
-        const std::size_t resultCount = std::min(maxWantedValues, dists.size());
+        const std::size_t resultCount = std::min(maxWantedValueCount, dists.size());
         const auto beginIt = std::cbegin(dists);
 
         StringSet res;
