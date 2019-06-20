@@ -7,8 +7,10 @@
 #include <algorithm>
 #include <cctype>
 #include <functional>
+#include <limits>
 #include <locale>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 namespace StringUtils
@@ -88,5 +90,11 @@ namespace StringUtils
     void replaceAll(std::string& inString, const std::string& fromWhat, const std::string& toWhat);
 
     std::string toLower(const std::string& text);
+
+    using StringSet = std::unordered_set<std::string>;
+    StringSet getClosestValues(const std::string& value,
+                               const StringSet& possibilities,
+                               std::size_t maxWantedValueCount,
+                               int maxDist = std::numeric_limits<int>::max());
 
 } // namespace StringUtils
