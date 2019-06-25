@@ -107,7 +107,7 @@ namespace StringUtils
     }
 
     StringSet getClosestValues(const std::string& value,
-                               const StringSet& possibilities,
+                               const UnorderedStringSet& possibilities,
                                std::size_t maxWantedValueCount,
                                int maxDist)
     {
