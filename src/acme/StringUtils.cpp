@@ -107,7 +107,7 @@ namespace StringUtils
     }
 
     StringSet getClosestValues(const std::string& value,
-                               const StringSet& possibilities,
+                               const UnorderedStringSet& possibilities,
                                std::size_t maxWantedValueCount,
                                int maxDist)
     {
@@ -131,9 +131,8 @@ namespace StringUtils
 
         StringSet res;
         res.reserve(resultCount);
-        std::transform(beginIt, beginIt + resultCount, std::inserter(res, std::begin(res)), [](const auto& pair) {
-            return pair.second;
-        });
+        std::transform(
+            beginIt, beginIt + resultCount, std::back_inserter(res), [](const auto& pair) { return pair.second; });
 
         return res;
     }

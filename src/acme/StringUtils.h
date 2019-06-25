@@ -91,9 +91,10 @@ namespace StringUtils
 
     std::string toLower(const std::string& text);
 
-    using StringSet = std::unordered_set<std::string>;
+    using StringSet = std::vector<std::string>;
+    using UnorderedStringSet = std::unordered_set<std::string>;
     StringSet getClosestValues(const std::string& value,
-                               const StringSet& possibilities,
+                               const UnorderedStringSet& possibilities,
                                std::size_t maxWantedValueCount,
                                int maxDist = std::numeric_limits<int>::max());
 
